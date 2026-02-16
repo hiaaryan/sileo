@@ -11,8 +11,7 @@ import {
 	useRef,
 	useState,
 } from "react";
-import type { SileoButton, SileoState, SileoStyles } from "./types";
-import "./styles.css";
+import type { SileoButton, SileoState, SileoStyles } from "../core/types";
 import {
 	ArrowRight,
 	Check,

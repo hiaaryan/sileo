@@ -2,11 +2,12 @@
 
 import "./styles.css";
 
-export { sileo, Toaster } from "./toast";
+export { sileo, Toaster } from "./react";
 export type {
 	SileoButton,
 	SileoOptions,
 	SileoPosition,
+	SileoPromiseOptions,
 	SileoState,
 	SileoStyles,
-} from "./types";
+} from "./react";

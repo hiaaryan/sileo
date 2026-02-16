@@ -1,490 +1,490 @@
 /* -------------------------------- Variables ------------------------------- */
 
 :root {
-	--sileo-spring-easing: linear(
-		0,
-		0.002 0.6%,
-		0.007 1.2%,
-		0.015 1.8%,
-		0.026 2.4%,
-		0.041 3.1%,
-		0.06 3.8%,
-		0.108 5.3%,
-		0.157 6.6%,
-		0.214 8%,
-		0.467 13.7%,
-		0.577 16.3%,
-		0.631 17.7%,
-		0.682 19.1%,
-		0.73 20.5%,
-		0.771 21.8%,
-		0.808 23.1%,
-		0.844 24.5%,
-		0.874 25.8%,
-		0.903 27.2%,
-		0.928 28.6%,
-		0.952 30.1%,
-		0.972 31.6%,
-		0.988 33.1%,
-		1.01 35.7%,
-		1.025 38.5%,
-		1.034 41.6%,
-		1.038 45%,
-		1.035 50.1%,
-		1.012 64.2%,
-		1.003 73%,
-		0.999 83.7%,
-		1
-	);
+  --sileo-spring-easing: linear(
+    0,
+    0.002 0.6%,
+    0.007 1.2%,
+    0.015 1.8%,
+    0.026 2.4%,
+    0.041 3.1%,
+    0.06 3.8%,
+    0.108 5.3%,
+    0.157 6.6%,
+    0.214 8%,
+    0.467 13.7%,
+    0.577 16.3%,
+    0.631 17.7%,
+    0.682 19.1%,
+    0.73 20.5%,
+    0.771 21.8%,
+    0.808 23.1%,
+    0.844 24.5%,
+    0.874 25.8%,
+    0.903 27.2%,
+    0.928 28.6%,
+    0.952 30.1%,
+    0.972 31.6%,
+    0.988 33.1%,
+    1.01 35.7%,
+    1.025 38.5%,
+    1.034 41.6%,
+    1.038 45%,
+    1.035 50.1%,
+    1.012 64.2%,
+    1.003 73%,
+    0.999 83.7%,
+    1
+  );
 
-	--sileo-duration: 600ms;
-	--sileo-height: 40px;
-	--sileo-width: 350px;
+  --sileo-duration: 600ms;
+  --sileo-height: 40px;
+  --sileo-width: 350px;
 
-	--sileo-state-success: oklch(0.723 0.219 142.136);
-	--sileo-state-loading: oklch(0.556 0 0);
-	--sileo-state-error: oklch(0.637 0.237 25.331);
-	--sileo-state-warning: oklch(0.795 0.184 86.047);
-	--sileo-state-info: oklch(0.685 0.169 237.323);
-	--sileo-state-action: oklch(0.623 0.214 259.815);
+  --sileo-state-success: oklch(0.723 0.219 142.136);
+  --sileo-state-loading: oklch(0.556 0 0);
+  --sileo-state-error: oklch(0.637 0.237 25.331);
+  --sileo-state-warning: oklch(0.795 0.184 86.047);
+  --sileo-state-info: oklch(0.685 0.169 237.323);
+  --sileo-state-action: oklch(0.623 0.214 259.815);
 }
 
 /* ---------------------------------- Toast --------------------------------- */
 
 [data-sileo-toast] {
-	position: relative;
-	cursor: pointer;
-	pointer-events: auto;
-	touch-action: none;
-	border: 0;
-	background: transparent;
-	padding: 0;
-	width: var(--sileo-width);
-	height: var(--_h, var(--sileo-height));
-	opacity: 0;
-	transform: translateZ(0) scale(0.95);
-	transform-origin: center;
-	contain: layout style;
-	overflow: visible;
+  position: relative;
+  cursor: pointer;
+  pointer-events: auto;
+  touch-action: none;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  width: var(--sileo-width);
+  height: var(--_h, var(--sileo-height));
+  opacity: 0;
+  transform: translateZ(0) scale(0.95);
+  transform-origin: center;
+  contain: layout style;
+  overflow: visible;
 }
 
 [data-sileo-toast][data-state="loading"] {
-	cursor: default;
+  cursor: default;
 }
 
 [data-sileo-toast][data-ready="true"] {
-	opacity: 1;
-	transform: translateZ(0) scale(1);
-	transition:
-		transform calc(var(--sileo-duration) * 0.66) var(--sileo-spring-easing),
-		opacity calc(var(--sileo-duration) * 0.66) var(--sileo-spring-easing),
-		margin-bottom calc(var(--sileo-duration) * 0.66) var(--sileo-spring-easing),
-		margin-top calc(var(--sileo-duration) * 0.66) var(--sileo-spring-easing),
-		height var(--sileo-duration) var(--sileo-spring-easing);
+  opacity: 1;
+  transform: translateZ(0) scale(1);
+  transition:
+    transform calc(var(--sileo-duration) * 0.66) var(--sileo-spring-easing),
+    opacity calc(var(--sileo-duration) * 0.66) var(--sileo-spring-easing),
+    margin-bottom calc(var(--sileo-duration) * 0.66) var(--sileo-spring-easing),
+    margin-top calc(var(--sileo-duration) * 0.66) var(--sileo-spring-easing),
+    height var(--sileo-duration) var(--sileo-spring-easing);
 }
 
 /* Entry animation direction */
 [data-sileo-viewport][data-position^="top"]
-	[data-sileo-toast]:not([data-ready="true"]) {
-	transform: translateY(-6px) scale(0.95);
+  [data-sileo-toast]:not([data-ready="true"]) {
+  transform: translateY(-6px) scale(0.95);
 }
 
 [data-sileo-viewport][data-position^="bottom"]
-	[data-sileo-toast]:not([data-ready="true"]) {
-	transform: translateY(6px) scale(0.95);
+  [data-sileo-toast]:not([data-ready="true"]) {
+  transform: translateY(6px) scale(0.95);
 }
 
 /* Exit */
 [data-sileo-toast][data-ready="true"][data-exiting="true"] {
-	opacity: 0;
-	pointer-events: none;
+  opacity: 0;
+  pointer-events: none;
 }
 
 [data-sileo-viewport][data-position^="top"]
-	[data-sileo-toast][data-ready="true"][data-exiting="true"] {
-	transform: translateY(-6px) scale(0.95);
+  [data-sileo-toast][data-ready="true"][data-exiting="true"] {
+  transform: translateY(-6px) scale(0.95);
 }
 
 [data-sileo-viewport][data-position^="bottom"]
-	[data-sileo-toast][data-ready="true"][data-exiting="true"] {
-	transform: translateY(6px) scale(0.95);
+  [data-sileo-toast][data-ready="true"][data-exiting="true"] {
+  transform: translateY(6px) scale(0.95);
 }
 
 /* ------------------------------- SVG Canvas ------------------------------- */
 
 [data-sileo-canvas] {
-	position: absolute;
-	left: 0;
-	right: 0;
-	pointer-events: none;
-	transform: translateZ(0);
-	contain: layout style;
-	overflow: visible;
+  position: absolute;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+  transform: translateZ(0);
+  contain: layout style;
+  overflow: visible;
 }
 
 [data-sileo-canvas][data-edge="top"] {
-	bottom: 0;
-	transform: scaleY(-1) translateZ(0);
+  bottom: 0;
+  transform: scaleY(-1) translateZ(0);
 }
 
 [data-sileo-canvas][data-edge="bottom"] {
-	top: 0;
+  top: 0;
 }
 
 [data-sileo-svg] {
-	overflow: visible;
+  overflow: visible;
 }
 
 /* --------------------------------- Shapes --------------------------------- */
 
 [data-sileo-pill],
 [data-sileo-body] {
-	transform-box: fill-box;
-	transform-origin: 50% 0%;
+  transform-box: fill-box;
+  transform-origin: 50% 0%;
 }
 
 [data-sileo-pill] {
-	transform: scaleY(var(--_sy, 1));
-	width: var(--_pw);
-	height: var(--_ph);
+  transform: scaleY(var(--_sy, 1));
+  width: var(--_pw);
+  height: var(--_ph);
 }
 
 [data-sileo-body] {
-	transform: scaleY(var(--_by, 0));
-	opacity: var(--_by, 0);
+  transform: scaleY(var(--_by, 0));
+  opacity: var(--_by, 0);
 }
 
 [data-sileo-toast][data-ready="true"] [data-sileo-pill] {
-	transition:
-		transform var(--sileo-duration) var(--sileo-spring-easing),
-		width var(--sileo-duration) var(--sileo-spring-easing),
-		x var(--sileo-duration) var(--sileo-spring-easing);
+  transition:
+    transform var(--sileo-duration) var(--sileo-spring-easing),
+    width var(--sileo-duration) var(--sileo-spring-easing),
+    x var(--sileo-duration) var(--sileo-spring-easing);
 }
 
 [data-sileo-toast][data-ready="true"][data-expanded="true"] [data-sileo-pill] {
-	transition-delay: calc(var(--sileo-duration) * 0.08);
+  transition-delay: calc(var(--sileo-duration) * 0.08);
 }
 
 [data-sileo-toast][data-ready="true"] [data-sileo-body] {
-	transition:
-		transform var(--sileo-duration) var(--sileo-spring-easing),
-		opacity var(--sileo-duration) var(--sileo-spring-easing);
+  transition:
+    transform var(--sileo-duration) var(--sileo-spring-easing),
+    opacity var(--sileo-duration) var(--sileo-spring-easing);
 }
 
 /* --------------------------------- Header --------------------------------- */
 
 [data-sileo-header] {
-	position: absolute;
-	z-index: 20;
-	display: flex;
-	align-items: center;
-	padding: 0.5rem;
-	height: var(--sileo-height);
-	overflow: hidden;
-	left: var(--_px, 0px);
-	transform: var(--_ht);
-	max-width: var(--_pw);
+  position: absolute;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  height: var(--sileo-height);
+  overflow: hidden;
+  left: var(--_px, 0px);
+  transform: var(--_ht);
+  max-width: var(--_pw);
 }
 
 [data-sileo-toast][data-ready="true"] [data-sileo-header] {
-	transition:
-		transform var(--sileo-duration) var(--sileo-spring-easing),
-		left var(--sileo-duration) var(--sileo-spring-easing),
-		max-width var(--sileo-duration) var(--sileo-spring-easing);
+  transition:
+    transform var(--sileo-duration) var(--sileo-spring-easing),
+    left var(--sileo-duration) var(--sileo-spring-easing),
+    max-width var(--sileo-duration) var(--sileo-spring-easing);
 }
 
 [data-sileo-header][data-edge="top"] {
-	bottom: 0;
+  bottom: 0;
 }
 
 [data-sileo-header][data-edge="bottom"] {
-	top: 0;
+  top: 0;
 }
 
 /* Header inner morphing */
 [data-sileo-header-stack] {
-	position: relative;
-	display: inline-flex;
-	align-items: center;
-	height: 100%;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
 }
 
 [data-sileo-header-inner] {
-	display: flex;
-	align-items: center;
-	gap: 0.5rem;
-	white-space: nowrap;
-	opacity: 1;
-	filter: blur(0px);
-	will-change: opacity, filter;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  opacity: 1;
+  filter: blur(0px);
+  will-change: opacity, filter;
 }
 
 [data-sileo-header-inner][data-layer="current"] {
-	animation: sileo-header-enter var(--sileo-duration) var(--sileo-spring-easing)
-		both;
+  animation: sileo-header-enter var(--sileo-duration) var(--sileo-spring-easing)
+    both;
 }
 
 [data-sileo-header-inner][data-layer="prev"] {
-	position: absolute;
-	left: 0;
-	top: 0;
-	pointer-events: none;
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
 }
 
 [data-sileo-header-inner][data-exiting="true"] {
-	animation: sileo-header-exit 300ms ease forwards;
+  animation: sileo-header-exit 300ms ease forwards;
 }
 
 /* ---------------------------------- Badge --------------------------------- */
 
 [data-sileo-badge] {
-	display: flex;
-	height: 24px;
-	width: 24px;
-	flex-shrink: 0;
-	align-items: center;
-	justify-content: center;
-	padding: 2px;
-	box-sizing: border-box;
-	border-radius: 9999px;
-	color: var(--sileo-tone, currentColor);
-	background-color: var(--sileo-tone-bg, transparent);
+  display: flex;
+  height: 24px;
+  width: 24px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  box-sizing: border-box;
+  border-radius: 9999px;
+  color: var(--sileo-tone, currentColor);
+  background-color: var(--sileo-tone-bg, transparent);
 }
 
 /* ---------------------------------- Title --------------------------------- */
 
 [data-sileo-title] {
-	font-size: 0.825rem;
-	line-height: 1rem;
-	font-weight: 500;
-	text-transform: capitalize;
-	color: var(--sileo-tone, currentColor);
+  font-size: 0.825rem;
+  line-height: 1rem;
+  font-weight: 500;
+  text-transform: capitalize;
+  color: var(--sileo-tone, currentColor);
 }
 
 /* ------------------------------ State Colors ------------------------------ */
 
 :is([data-sileo-badge], [data-sileo-title])[data-state] {
-	--_c: var(--sileo-state-success);
-	--sileo-tone: var(--_c);
-	--sileo-tone-bg: color-mix(in oklch, var(--_c) 20%, transparent);
+  --_c: var(--sileo-state-success);
+  --sileo-tone: var(--_c);
+  --sileo-tone-bg: color-mix(in oklch, var(--_c) 20%, transparent);
 }
 
 :is([data-sileo-badge], [data-sileo-title])[data-state="loading"] {
-	--_c: var(--sileo-state-loading);
+  --_c: var(--sileo-state-loading);
 }
 
 :is([data-sileo-badge], [data-sileo-title])[data-state="error"] {
-	--_c: var(--sileo-state-error);
+  --_c: var(--sileo-state-error);
 }
 
 :is([data-sileo-badge], [data-sileo-title])[data-state="warning"] {
-	--_c: var(--sileo-state-warning);
+  --_c: var(--sileo-state-warning);
 }
 
 :is([data-sileo-badge], [data-sileo-title])[data-state="info"] {
-	--_c: var(--sileo-state-info);
+  --_c: var(--sileo-state-info);
 }
 
 :is([data-sileo-badge], [data-sileo-title])[data-state="action"] {
-	--_c: var(--sileo-state-action);
+  --_c: var(--sileo-state-action);
 }
 
 /* --------------------------------- Content -------------------------------- */
 
 [data-sileo-content] {
-	position: absolute;
-	left: 0;
-	z-index: 10;
-	width: 100%;
-	pointer-events: none;
-	opacity: var(--_co, 0);
+  position: absolute;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+  pointer-events: none;
+  opacity: var(--_co, 0);
 }
 
 [data-sileo-content]:not([data-visible="true"]) {
-	content-visibility: hidden;
+  content-visibility: hidden;
 }
 
 [data-sileo-toast][data-ready="true"] [data-sileo-content] {
-	transition: opacity calc(var(--sileo-duration) * 0.08)
-		var(--sileo-spring-easing) calc(var(--sileo-duration) * 0.04);
+  transition: opacity calc(var(--sileo-duration) * 0.08)
+    var(--sileo-spring-easing) calc(var(--sileo-duration) * 0.04);
 }
 
 [data-sileo-content][data-edge="top"] {
-	top: 0;
+  top: 0;
 }
 
 [data-sileo-content][data-edge="bottom"] {
-	top: var(--sileo-height);
+  top: var(--sileo-height);
 }
 
 [data-sileo-content][data-visible="true"] {
-	pointer-events: auto;
+  pointer-events: auto;
 }
 
 [data-sileo-toast][data-ready="true"]
-	[data-sileo-content][data-visible="true"] {
-	transition: opacity var(--sileo-duration) var(--sileo-spring-easing)
-		calc(var(--sileo-duration) * 0.25);
+  [data-sileo-content][data-visible="true"] {
+  transition: opacity var(--sileo-duration) var(--sileo-spring-easing)
+    calc(var(--sileo-duration) * 0.25);
 }
 
 [data-sileo-description] {
-	width: 100%;
-	text-align: left;
-	padding: 1rem;
-	font-size: 0.875rem;
-	line-height: 1.25rem;
-	contain: layout style;
-	content-visibility: auto;
+  width: 100%;
+  text-align: left;
+  padding: 1rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  contain: layout style;
+  content-visibility: auto;
 }
 
 /* --------------------------------- Button --------------------------------- */
 
 [data-sileo-button] {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	height: 1.75rem;
-	padding: 0 0.625rem;
-	margin-top: 0.75rem;
-	border-radius: 9999px;
-	border: 0;
-	font-size: 0.75rem;
-	font-weight: 500;
-	cursor: pointer;
-	color: var(--sileo-btn-color, currentColor);
-	background-color: var(--sileo-btn-bg, transparent);
-	transition: background-color 150ms ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 1.75rem;
+  padding: 0 0.625rem;
+  margin-top: 0.75rem;
+  border-radius: 9999px;
+  border: 0;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--sileo-btn-color, currentColor);
+  background-color: var(--sileo-btn-bg, transparent);
+  transition: background-color 150ms ease;
 }
 
 [data-sileo-button]:hover {
-	background-color: var(--sileo-btn-bg-hover, transparent);
+  background-color: var(--sileo-btn-bg-hover, transparent);
 }
 
 [data-sileo-button][data-state] {
-	--_c: var(--sileo-state-success);
-	--sileo-btn-color: var(--_c);
-	--sileo-btn-bg: color-mix(in oklch, var(--_c) 15%, transparent);
-	--sileo-btn-bg-hover: color-mix(in oklch, var(--_c) 25%, transparent);
+  --_c: var(--sileo-state-success);
+  --sileo-btn-color: var(--_c);
+  --sileo-btn-bg: color-mix(in oklch, var(--_c) 15%, transparent);
+  --sileo-btn-bg-hover: color-mix(in oklch, var(--_c) 25%, transparent);
 }
 
 [data-sileo-button][data-state="loading"] {
-	--_c: var(--sileo-state-loading);
+  --_c: var(--sileo-state-loading);
 }
 
 [data-sileo-button][data-state="error"] {
-	--_c: var(--sileo-state-error);
+  --_c: var(--sileo-state-error);
 }
 
 [data-sileo-button][data-state="warning"] {
-	--_c: var(--sileo-state-warning);
+  --_c: var(--sileo-state-warning);
 }
 
 [data-sileo-button][data-state="info"] {
-	--_c: var(--sileo-state-info);
+  --_c: var(--sileo-state-info);
 }
 
 [data-sileo-button][data-state="action"] {
-	--_c: var(--sileo-state-action);
+  --_c: var(--sileo-state-action);
 }
 
 /* -------------------------------- Animations ------------------------------ */
 
 [data-sileo-icon="spin"] {
-	animation: sileo-spin 1s linear infinite;
+  animation: sileo-spin 1s linear infinite;
 }
 
 @keyframes sileo-spin {
-	to {
-		rotate: 360deg;
-	}
+  to {
+    rotate: 360deg;
+  }
 }
 
 @keyframes sileo-header-enter {
-	from {
-		opacity: 0;
-		filter: blur(6px);
-	}
-	to {
-		opacity: 1;
-		filter: blur(0px);
-	}
+  from {
+    opacity: 0;
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0px);
+  }
 }
 
 @keyframes sileo-header-exit {
-	from {
-		opacity: 1;
-		filter: blur(0px);
-	}
-	to {
-		opacity: 0;
-		filter: blur(6px);
-	}
+  from {
+    opacity: 1;
+    filter: blur(0px);
+  }
+  to {
+    opacity: 0;
+    filter: blur(6px);
+  }
 }
 
 /* -------------------------------- Viewports ------------------------------- */
 
 [data-sileo-viewport] {
-	position: fixed;
-	z-index: 50;
-	display: flex;
-	gap: 0.75rem;
-	padding: 0.75rem;
-	pointer-events: none;
-	max-width: calc(100vw - 1.5rem);
-	contain: layout style;
+  position: fixed;
+  z-index: 50;
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  pointer-events: none;
+  max-width: calc(100vw - 1.5rem);
+  contain: layout style;
 }
 
 [data-sileo-viewport][data-position^="top"]
-	[data-sileo-toast]:not([data-ready="true"]) {
-	margin-bottom: calc(-1 * (var(--sileo-height) + 0.75rem));
+  [data-sileo-toast]:not([data-ready="true"]) {
+  margin-bottom: calc(-1 * (var(--sileo-height) + 0.75rem));
 }
 
 [data-sileo-viewport][data-position^="bottom"]
-	[data-sileo-toast]:not([data-ready="true"]) {
-	margin-top: calc(-1 * (var(--sileo-height) + 0.75rem));
+  [data-sileo-toast]:not([data-ready="true"]) {
+  margin-top: calc(-1 * (var(--sileo-height) + 0.75rem));
 }
 
 /* Vertical edge */
 [data-sileo-viewport][data-position^="top"] {
-	top: 0;
-	flex-direction: column-reverse;
+  top: 0;
+  flex-direction: column-reverse;
 }
 
 [data-sileo-viewport][data-position^="bottom"] {
-	bottom: 0;
-	flex-direction: column;
+  bottom: 0;
+  flex-direction: column;
 }
 
 /* Horizontal alignment */
 [data-sileo-viewport][data-position$="left"] {
-	left: 0;
-	align-items: flex-start;
+  left: 0;
+  align-items: flex-start;
 }
 
 [data-sileo-viewport][data-position$="right"] {
-	right: 0;
-	align-items: flex-end;
+  right: 0;
+  align-items: flex-end;
 }
 
 [data-sileo-viewport][data-position$="center"] {
-	left: 50%;
-	transform: translateX(-50%);
-	align-items: center;
+  left: 50%;
+  transform: translateX(-50%);
+  align-items: center;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-	[data-sileo-toast][data-ready="true"]:hover,
-	[data-sileo-toast][data-ready="true"][data-exiting="true"] {
-		will-change: transform, opacity, height;
-	}
+  [data-sileo-toast][data-ready="true"]:hover,
+  [data-sileo-toast][data-ready="true"][data-exiting="true"] {
+    will-change: transform, opacity, height;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-	*,
-	*::before,
-	*::after {
-		animation-duration: 0.01ms;
-		animation-iteration-count: 1;
-		transition-duration: 0.01ms;
-	}
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
+    transition-duration: 0.01ms;
+  }
 }
