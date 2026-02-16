@@ -1,5 +1,3 @@
-import type { ReactNode } from "react";
-
 export type SileoState =
 	| "success"
 	| "loading"
@@ -31,15 +29,20 @@ export const SILEO_POSITIONS = [
 
 export type SileoPosition = (typeof SILEO_POSITIONS)[number];
 
-export interface SileoOptions {
+export interface SileoOptions<Renderable = unknown> {
 	title?: string;
-	description?: ReactNode | string;
+	description?: Renderable | string;
 	position?: SileoPosition;
 	duration?: number | null;
-	icon?: ReactNode | null;
+	icon?: Renderable | null;
 	styles?: SileoStyles;
 	fill?: string;
 	roundness?: number;
 	autopilot?: boolean | { expand?: number; collapse?: number };
 	button?: SileoButton;
 }
+
+export type SileoOffsetValue = number | string;
+export type SileoOffsetConfig = Partial<
+	Record<"top" | "right" | "bottom" | "left", SileoOffsetValue>
+>;

@@ -1,7 +1,7 @@
 {
 	"name": "sileo",
 	"version": "0.1.0",
-	"description": "An opinionated, physics based toast notification library for react.",
+	"description": "An opinionated, physics based toast notification library for react and vue.",
 	"license": "MIT",
 	"repository": {
 		"type": "git",
@@ -19,6 +19,17 @@
 			},
 			"default": "./dist/index.js"
 		},
+		"./vue": {
+			"import": {
+				"types": "./dist/vue/index.d.mts",
+				"default": "./dist/vue/index.mjs"
+			},
+			"require": {
+				"types": "./dist/vue/index.d.ts",
+				"default": "./dist/vue/index.js"
+			},
+			"default": "./dist/vue/index.js"
+		},
 		"./styles.css": "./dist/styles.css"
 	},
 	"main": "./dist/index.js",
@@ -32,9 +43,22 @@
 	},
 	"peerDependencies": {
 		"react": ">=18",
-		"react-dom": ">=18"
+		"react-dom": ">=18",
+		"vue": ">=3"
+	},
+	"peerDependenciesMeta": {
+		"react": {
+			"optional": true
+		},
+		"react-dom": {
+			"optional": true
+		},
+		"vue": {
+			"optional": true
+		}
 	},
 	"devDependencies": {
-		"bunchee": "^6.9.4"
+		"bunchee": "^6.9.4",
+		"vue": "^3"
 	}
 }
