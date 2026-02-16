@@ -228,6 +228,9 @@ export function Toaster({
 }: SileoToasterProps) {
 	const [toasts, setToasts] = useState<SileoItem[]>(store.toasts);
 	const [activeId, setActiveId] = useState<string>();
+	const [mounted, setMounted] = useState(false);
+
+	useEffect(() => setMounted(true), []);
 
 	const hoverRef = useRef(false);
 	const timersRef = useRef(new Map<string, number>());
@@ -440,7 +443,7 @@ export function Toaster({
 	return (
 		<>
 			{children}
-			{createPortal(<>{viewports}</>, document.body)}
+			{mounted && createPortal(<>{viewports}</>, document.body)}
 		</>
 	);
 }
