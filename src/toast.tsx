@@ -8,6 +8,7 @@ import {
 	useRef,
 	useState,
 } from "react";
+import { createPortal } from "react-dom";
 import { Sileo } from "./sileo";
 import {
 	SILEO_POSITIONS,
@@ -390,54 +391,56 @@ export function Toaster({
 		return map;
 	}, [toasts, position]);
 
+	const viewports = SILEO_POSITIONS.map((pos) => {
+		const items = byPosition[pos];
+		if (!items?.length) return null;
+
+		const pill = pillAlign(pos);
+		const expand = expandDir(pos);
+
+		return (
+			<section
+				key={pos}
+				data-sileo-viewport
+				data-position={pos}
+				aria-live="polite"
+				style={getViewportStyle(pos)}
+			>
+				{items.map((item) => {
+					const h = getHandlers(item.id);
+					return (
+						<Sileo
+							key={item.id}
+							id={item.id}
+							state={item.state}
+							title={item.title}
+							description={item.description}
+							position={pill}
+							expand={expand}
+							icon={item.icon}
+							fill={item.fill}
+							styles={item.styles}
+							button={item.button}
+							roundness={item.roundness}
+							exiting={item.exiting}
+							autoExpandDelayMs={item.autoExpandDelayMs}
+							autoCollapseDelayMs={item.autoCollapseDelayMs}
+							refreshKey={item.instanceId}
+							canExpand={activeId === undefined || activeId === item.id}
+							onMouseEnter={h.enter}
+							onMouseLeave={h.leave}
+							onDismiss={h.dismiss}
+						/>
+					);
+				})}
+			</section>
+		);
+	});
+
 	return (
 		<>
 			{children}
-			{SILEO_POSITIONS.map((pos) => {
-				const items = byPosition[pos];
-				if (!items?.length) return null;
-
-				const pill = pillAlign(pos);
-				const expand = expandDir(pos);
-
-				return (
-					<section
-						key={pos}
-						data-sileo-viewport
-						data-position={pos}
-						aria-live="polite"
-						style={getViewportStyle(pos)}
-					>
-						{items.map((item) => {
-							const h = getHandlers(item.id);
-							return (
-								<Sileo
-									key={item.id}
-									id={item.id}
-									state={item.state}
-									title={item.title}
-									description={item.description}
-									position={pill}
-									expand={expand}
-									icon={item.icon}
-									fill={item.fill}
-									styles={item.styles}
-									button={item.button}
-									roundness={item.roundness}
-									exiting={item.exiting}
-									autoExpandDelayMs={item.autoExpandDelayMs}
-									autoCollapseDelayMs={item.autoCollapseDelayMs}
-									refreshKey={item.instanceId}
-									canExpand={activeId === undefined || activeId === item.id}
-									onMouseEnter={h.enter}
-									onMouseLeave={h.leave}
-									onDismiss={h.dismiss}
-								/>
-							);
-						})}
-					</section>
-				);
-			})}
+			{createPortal(<>{viewports}</>, document.body)}
 		</>
 	);
 }

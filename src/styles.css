@@ -425,7 +425,7 @@
 
 [data-sileo-viewport] {
 	position: fixed;
-	z-index: 50;
+	z-index: 9999;
 	display: flex;
 	gap: 0.75rem;
 	padding: 0.75rem;
