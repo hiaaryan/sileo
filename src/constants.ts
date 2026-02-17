@@ -2,7 +2,7 @@
 
 export const HEIGHT = 40;
 export const WIDTH = 350;
-export const DEFAULT_ROUNDNESS = 18;
+export const DEFAULT_ROUNDNESS = 16;
 
 /* --------------------------------- Timing --------------------------------- */
 
