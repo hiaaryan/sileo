@@ -456,9 +456,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-	*,
-	*::before,
-	*::after {
+	[data-sileo-viewport],
+	[data-sileo-viewport] *,
+	[data-sileo-viewport] *::before,
+	[data-sileo-viewport] *::after {
 		animation-duration: 0.01ms;
 		animation-iteration-count: 1;
 		transition-duration: 0.01ms;
