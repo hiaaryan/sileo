@@ -464,3 +464,13 @@
 		transition-duration: 0.01ms;
 	}
 }
+
+/* --------------------------------- Themes -------------------------------- */
+
+[data-sileo-viewport][data-theme="dark"] [data-sileo-description] {
+	color: rgba(255, 255, 255, 0.8);
+}
+
+[data-sileo-viewport][data-theme="light"] [data-sileo-description] {
+	color: rgba(0, 0, 0, 0.7);
+}
