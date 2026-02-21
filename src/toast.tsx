@@ -47,6 +47,7 @@ export interface SileoToasterProps {
 	position?: SileoPosition;
 	offset?: SileoOffsetValue | SileoOffsetConfig;
 	options?: Partial<SileoOptions>;
+	closeButton?: boolean;
 }
 
 /* ------------------------------ Global State ------------------------------ */
@@ -218,6 +219,7 @@ export function Toaster({
 	position = "top-right",
 	offset,
 	options,
+	closeButton = false,
 }: SileoToasterProps) {
 	const [toasts, setToasts] = useState<SileoItem[]>(store.toasts);
 	const [activeId, setActiveId] = useState<string>();
@@ -423,6 +425,7 @@ export function Toaster({
 									onMouseEnter={h.enter}
 									onMouseLeave={h.leave}
 									onDismiss={h.dismiss}
+									closeButton={closeButton}
 								/>
 							);
 						})}
