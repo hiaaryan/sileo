@@ -34,6 +34,7 @@ export type SileoPosition = (typeof SILEO_POSITIONS)[number];
 export interface SileoOptions {
 	title?: string;
 	description?: ReactNode | string;
+	type?: SileoState;
 	position?: SileoPosition;
 	duration?: number | null;
 	icon?: ReactNode | null;

@@ -160,7 +160,7 @@ export interface SileoPromiseOptions<T = unknown> {
 }
 
 export const sileo = {
-	show: (opts: SileoOptions) => createToast(opts).id,
+	show: (opts: SileoOptions) => createToast({ ...opts, state: opts.type }).id,
 	success: (opts: SileoOptions) =>
 		createToast({ ...opts, state: "success" }).id,
 	error: (opts: SileoOptions) => createToast({ ...opts, state: "error" }).id,
