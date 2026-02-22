@@ -149,14 +149,14 @@
 	overflow: hidden;
 	left: var(--_px, 0px);
 	transform: var(--_ht);
-	max-width: var(--_pw);
+	width: var(--_pw);
 }
 
 [data-sileo-toast][data-ready="true"] [data-sileo-header] {
 	transition:
 		transform var(--sileo-duration) var(--sileo-spring-easing),
 		left var(--sileo-duration) var(--sileo-spring-easing),
-		max-width var(--sileo-duration) var(--sileo-spring-easing);
+		width var(--sileo-duration) var(--sileo-spring-easing);
 }
 
 [data-sileo-header][data-edge="top"] {
@@ -446,6 +446,42 @@
 	left: 50%;
 	transform: translateX(-50%);
 	align-items: center;
+}
+
+/* ------------------------------ Navigation -------------------------------- */
+
+[data-sileo-nav] {
+	display: flex;
+	align-items: center;
+	gap: 0.125rem;
+	margin-left: auto;
+	flex-shrink: 0;
+	color: #fff;
+	pointer-events: auto;
+	user-select: none;
+}
+
+[data-sileo-nav] button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 1.5rem;
+	height: 1.5rem;
+	border: 0;
+	border-radius: 9999px;
+	background: transparent;
+	cursor: pointer;
+	color: inherit;
+	padding: 0;
+}
+
+[data-sileo-nav] button:not(:disabled):hover {
+	background-color: rgba(255, 255, 255, 0.12);
+}
+
+[data-sileo-nav] button:disabled {
+	opacity: 0.3;
+	cursor: default;
 }
 
 @media (prefers-reduced-motion: no-preference) {

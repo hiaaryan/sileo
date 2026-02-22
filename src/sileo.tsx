@@ -26,6 +26,8 @@ import {
 import {
 	ArrowRight,
 	Check,
+	ChevronLeft,
+	ChevronRight,
 	CircleAlert,
 	LifeBuoy,
 	LoaderCircle,
@@ -68,6 +70,9 @@ interface SileoProps {
 	onMouseEnter?: MouseEventHandler<HTMLButtonElement>;
 	onMouseLeave?: MouseEventHandler<HTMLButtonElement>;
 	onDismiss?: () => void;
+	navIndex?: number;
+	navTotal?: number;
+	onNavigate?: (dir: -1 | 1) => void;
 }
 
 /* ---------------------------------- Icons --------------------------------- */
@@ -136,6 +141,9 @@ export const Sileo = memo(function Sileo({
 	onMouseEnter,
 	onMouseLeave,
 	onDismiss,
+	navIndex,
+	navTotal,
+	onNavigate,
 }: SileoProps) {
 	const next: View = useMemo(
 		() => ({ title, description, state, icon, styles, button, fill }),
@@ -385,6 +393,8 @@ export const Sileo = memo(function Sileo({
 
 	/* ------------------------------ Derived values ---------------------------- */
 
+	const showNav = navTotal !== undefined && navTotal > 1;
+
 	const minExpanded = HEIGHT * MIN_EXPAND_RATIO;
 	const rawExpanded = hasDesc
 		? Math.max(minExpanded, HEIGHT + contentHeight)
@@ -398,7 +408,8 @@ export const Sileo = memo(function Sileo({
 	const expanded = open ? rawExpanded : frozenExpandedRef.current;
 	const svgHeight = hasDesc ? Math.max(expanded, minExpanded) : HEIGHT;
 	const expandedContent = Math.max(0, expanded - HEIGHT);
-	const resolvedPillWidth = Math.max(pillWidth || HEIGHT, HEIGHT);
+	const navExtra = showNav ? 50 : 0;
+	const resolvedPillWidth = Math.max(pillWidth || HEIGHT, HEIGHT) + navExtra;
 	const pillHeight = HEIGHT + blur * 3;
 
 	const pillX =
@@ -548,6 +559,7 @@ export const Sileo = memo(function Sileo({
 			if (exiting || !onDismiss) return;
 			const target = e.target as HTMLElement;
 			if (target.closest("[data-sileo-button]")) return;
+			if (target.closest("[data-sileo-nav]")) return;
 			pointerStartRef.current = e.clientY;
 			e.currentTarget.setPointerCapture(e.pointerId);
 			const el = buttonRef.current;
@@ -656,6 +668,30 @@ export const Sileo = memo(function Sileo({
 						</div>
 					)}
 				</div>
+				{showNav && (
+					<div data-sileo-nav>
+						<button
+							type="button"
+							onClick={() => onNavigate?.(-1)}
+							disabled={navIndex === 0}
+							aria-label="Previous notification"
+						>
+							<ChevronLeft />
+						</button>
+						<button
+							type="button"
+							onClick={() => onNavigate?.(1)}
+							disabled={
+								navIndex !== undefined &&
+								navTotal !== undefined &&
+								navIndex >= navTotal - 1
+							}
+							aria-label="Next notification"
+						>
+							<ChevronRight />
+						</button>
+					</div>
+				)}
 			</div>
 
 			{hasDesc && (

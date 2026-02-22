@@ -48,6 +48,7 @@ export interface SileoToasterProps {
 	offset?: SileoOffsetValue | SileoOffsetConfig;
 	options?: Partial<SileoOptions>;
 	theme?: "light" | "dark" | "system";
+	navigation?: boolean;
 }
 
 /* ------------------------------ Global State ------------------------------ */
@@ -132,7 +133,7 @@ const createToast = (options: InternalSileoOptions) => {
 	const live = store.toasts.filter((t) => !t.exiting);
 	const merged = mergeOptions(options);
 
-	const id = merged.id ?? "sileo-default";
+	const id = merged.id ?? generateId();
 	const prev = live.find((t) => t.id === id);
 	const item = buildSileoItem(merged, id, prev?.position);
 
@@ -252,15 +253,18 @@ export function Toaster({
 	offset,
 	options,
 	theme,
+	navigation = false,
 }: SileoToasterProps) {
 	const resolvedTheme = useResolvedTheme(theme);
 	const [toasts, setToasts] = useState<SileoItem[]>(store.toasts);
 	const [activeId, setActiveId] = useState<string>();
+	const [selectedIds, setSelectedIds] = useState<Partial<Record<SileoPosition, string>>>({});
 
 	const hoverRef = useRef(false);
 	const timersRef = useRef(new Map<string, number>());
 	const listRef = useRef(toasts);
 	const latestRef = useRef<string | undefined>(undefined);
+	const prevLiveIdsRef = useRef(new Set<string>());
 	const handlersCache = useRef(
 		new Map<
 			string,
@@ -324,6 +328,20 @@ export function Toaster({
 		for (const id of handlersCache.current.keys()) {
 			if (!toastIds.has(id)) handlersCache.current.delete(id);
 		}
+
+		const currentLive = toasts.filter((t) => !t.exiting);
+		const newToasts = currentLive.filter((t) => !prevLiveIdsRef.current.has(t.id));
+		if (newToasts.length > 0) {
+			setSelectedIds((prev) => {
+				const next = { ...prev };
+				for (const t of newToasts) {
+					const pos = t.position ?? store.position;
+					delete next[pos];
+				}
+				return next;
+			});
+		}
+		prevLiveIdsRef.current = new Set(currentLive.map((t) => t.id));
 
 		schedule(toasts);
 	}, [toasts, schedule]);
@@ -420,12 +438,41 @@ export function Toaster({
 		return map;
 	}, [toasts, position]);
 
+	const navigate = useCallback(
+		(pos: SileoPosition, dir: -1 | 1) => {
+			const items = activePositions.get(pos) ?? [];
+			const live = items.filter((t) => !t.exiting);
+			setSelectedIds((prev) => {
+				const rawSel = prev[pos];
+				const curId =
+					rawSel && live.find((t) => t.id === rawSel)
+						? rawSel
+						: live.at(-1)?.id;
+				const curIdx = live.findIndex((t) => t.id === curId);
+				const nextIdx = Math.max(0, Math.min(live.length - 1, curIdx + dir));
+				const nextId = live[nextIdx]?.id;
+				if (!nextId || nextId === prev[pos]) return prev;
+				return { ...prev, [pos]: nextId };
+			});
+		},
+		[activePositions],
+	);
+
 	return (
 		<>
 			{children}
 			{Array.from(activePositions, ([pos, items]) => {
 				const pill = pillAlign(pos);
 				const expand = expandDir(pos);
+
+				const live = items.filter((t) => !t.exiting);
+				const rawSel = selectedIds[pos];
+				const selId =
+					rawSel && items.find((t) => t.id === rawSel)
+						? rawSel
+						: (live.at(-1) ?? items.at(-1))?.id;
+				const displayItem = items.find((t) => t.id === selId);
+				const showNav = live.length > 1 && !displayItem?.exiting;
 
 				return (
 					<section
@@ -437,7 +484,10 @@ export function Toaster({
 						style={getViewportStyle(pos)}
 					>
 						{items.map((item) => {
+							const isSelected = item.id === selId;
+							if (!isSelected && !item.exiting) return null;
 							const h = getHandlers(item.id);
+							const selIdx = live.findIndex((t) => t.id === selId);
 							return (
 								<Sileo
 									key={item.id}
@@ -460,6 +510,9 @@ export function Toaster({
 									onMouseEnter={h.enter}
 									onMouseLeave={h.leave}
 									onDismiss={h.dismiss}
+									navIndex={navigation && showNav && isSelected ? selIdx : undefined}
+									navTotal={navigation && showNav && isSelected ? live.length : undefined}
+									onNavigate={(dir) => navigate(pos, dir)}
 								/>
 							);
 						})}
