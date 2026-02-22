@@ -423,6 +423,7 @@ export function Toaster({
 									onMouseEnter={h.enter}
 									onMouseLeave={h.leave}
 									onDismiss={h.dismiss}
+									dismiss={item.dismiss}
 								/>
 							);
 						})}

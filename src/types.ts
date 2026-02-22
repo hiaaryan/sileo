@@ -42,4 +42,5 @@ export interface SileoOptions {
 	roundness?: number;
 	autopilot?: boolean | { expand?: number; collapse?: number };
 	button?: SileoButton;
+	dismiss?: boolean;
 }
