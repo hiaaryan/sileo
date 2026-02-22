@@ -68,6 +68,7 @@ interface SileoProps {
 	onMouseEnter?: MouseEventHandler<HTMLButtonElement>;
 	onMouseLeave?: MouseEventHandler<HTMLButtonElement>;
 	onDismiss?: () => void;
+	dismiss?: boolean;
 }
 
 /* ---------------------------------- Icons --------------------------------- */
@@ -136,6 +137,7 @@ export const Sileo = memo(function Sileo({
 	onMouseEnter,
 	onMouseLeave,
 	onDismiss,
+	dismiss,
 }: SileoProps) {
 	const next: View = useMemo(
 		() => ({ title, description, state, icon, styles, button, fill }),
@@ -548,6 +550,12 @@ export const Sileo = memo(function Sileo({
 			if (exiting || !onDismiss) return;
 			const target = e.target as HTMLElement;
 			if (target.closest("[data-sileo-button]")) return;
+			
+			if (dismiss) {
+				onDismiss();
+				return;
+			}
+			
 			pointerStartRef.current = e.clientY;
 			e.currentTarget.setPointerCapture(e.pointerId);
 			const el = buttonRef.current;
@@ -557,7 +565,7 @@ export const Sileo = memo(function Sileo({
 				el.addEventListener("pointerup", h.onUp, { passive: true });
 			}
 		},
-		[exiting, onDismiss],
+		[exiting, onDismiss, dismiss],
 	);
 
 	/* --------------------------------- Render --------------------------------- */
