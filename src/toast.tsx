@@ -81,13 +81,19 @@ const timeoutKey = (t: SileoItem) => `${t.id}:${t.instanceId}`;
 const dismissToast = (id: string) => {
 	const item = store.toasts.find((t) => t.id === id);
 	if (!item || item.exiting) return;
+	const { instanceId } = item;
 
 	store.update((prev) =>
-		prev.map((t) => (t.id === id ? { ...t, exiting: true } : t)),
+		prev.map((t) =>
+			t.id === id && t.instanceId === instanceId ? { ...t, exiting: true } : t,
+		),
 	);
 
 	setTimeout(
-		() => store.update((prev) => prev.filter((t) => t.id !== id)),
+		() =>
+			store.update((prev) =>
+				prev.filter((t) => !(t.id === id && t.instanceId === instanceId)),
+			),
 		EXIT_DURATION,
 	);
 };
@@ -132,7 +138,7 @@ const createToast = (options: InternalSileoOptions) => {
 	const live = store.toasts.filter((t) => !t.exiting);
 	const merged = mergeOptions(options);
 
-	const id = merged.id ?? "sileo-default";
+	const id = merged.id ?? generateId();
 	const prev = live.find((t) => t.id === id);
 	const item = buildSileoItem(merged, id, prev?.position);
 
