@@ -337,30 +337,85 @@
 /* --------------------------------- Button --------------------------------- */
 
 [data-sileo-button] {
+	/* Tone of a single action: an explicit `color` wins over the toast state. */
+	--_bt: var(--sileo-btn-tone, var(--_c, currentColor));
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	height: 1.75rem;
-	padding: 0 0.625rem;
+	padding: 0 0.75rem;
 	margin-top: 0.75rem;
 	border-radius: 9999px;
-	border: 0;
+	border: 1px solid transparent;
 	font-size: 0.75rem;
 	font-weight: 500;
+	white-space: nowrap;
 	cursor: pointer;
 	color: var(--sileo-btn-color, currentColor);
 	background-color: var(--sileo-btn-bg, transparent);
-	transition: background-color 150ms ease;
+	transition: background-color 150ms ease, border-color 150ms ease,
+		color 150ms ease;
+}
+
+[data-sileo-buttons] {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.5rem;
+	margin-top: 0.75rem;
+}
+
+/* Actions share the row evenly rather than hugging their labels: a pair of
+   equal-width buttons reads as a pair of choices, and each stays comfortably
+   tappable. `min-width: max-content` keeps a long label from being squashed —
+   such a pair wraps onto its own line instead. */
+[data-sileo-buttons] [data-sileo-button] {
+	flex: 1 1 0;
+	min-width: max-content;
+	margin-top: 0;
 }
 
 [data-sileo-button]:hover {
 	background-color: var(--sileo-btn-bg-hover, transparent);
 }
 
-[data-sileo-button][data-state] {
-	--sileo-btn-color: var(--_c);
-	--sileo-btn-bg: color-mix(in oklch, var(--_c) 15%, transparent);
-	--sileo-btn-bg-hover: color-mix(in oklch, var(--_c) 25%, transparent);
+[data-sileo-button] {
+	--sileo-btn-color: var(--_bt);
+}
+
+/* ------------------------------ Button variants --------------------------- */
+
+[data-sileo-button][data-variant="soft"] {
+	--sileo-btn-bg: color-mix(in oklch, var(--_bt) 15%, transparent);
+	--sileo-btn-bg-hover: color-mix(in oklch, var(--_bt) 25%, transparent);
+}
+
+[data-sileo-button][data-variant="solid"] {
+	--sileo-btn-bg: var(--_bt);
+	--sileo-btn-bg-hover: color-mix(in oklch, var(--_bt) 85%, black);
+	--sileo-btn-color: var(--sileo-btn-fg, white);
+}
+
+/* Derive the label colour from the tone's own lightness, so a solid button
+   stays readable on a pale tone (warning yellow) as well as a dark one. */
+@supports (color: oklch(from red l c h)) {
+	[data-sileo-button][data-variant="solid"] {
+		--sileo-btn-color: var(
+			--sileo-btn-fg,
+			oklch(from var(--_bt) clamp(0, (0.65 - l) * 1000, 1) 0 0)
+		);
+	}
+}
+
+[data-sileo-button][data-variant="outline"] {
+	--sileo-btn-bg: transparent;
+	--sileo-btn-bg-hover: color-mix(in oklch, var(--_bt) 12%, transparent);
+	border-color: color-mix(in oklch, var(--_bt) 40%, transparent);
+}
+
+[data-sileo-button][data-variant="ghost"] {
+	--sileo-btn-bg: transparent;
+	--sileo-btn-bg-hover: color-mix(in oklch, var(--_bt) 12%, transparent);
 }
 
 /* -------------------------------- Animations ------------------------------ */

@@ -42,9 +42,45 @@ interface View {
 	state: State;
 	icon?: ReactNode | null;
 	styles?: SileoStyles;
-	button?: SileoButton;
+	button?: SileoButton | SileoButton[];
 	fill: string;
 }
+
+/**
+ * A single toast action. Rendered as an <a>, not a <button>: the toast root is
+ * itself a <button> and nesting one inside another is invalid HTML.
+ */
+const ActionButton = memo(function ActionButton({
+	button,
+	state,
+	className,
+	onSelect,
+}: {
+	button: SileoButton;
+	state: State;
+	className?: string;
+	onSelect: (event: React.MouseEvent, button: SileoButton) => void;
+}) {
+	return (
+		// biome-ignore lint/a11y/useValidAnchor: cannot use button inside a button
+		<a
+			href="#"
+			type="button"
+			data-sileo-button
+			data-state={state}
+			data-variant={button.variant ?? "soft"}
+			className={className}
+			style={
+				button.color
+					? ({ "--sileo-btn-tone": button.color } as CSSProperties)
+					: undefined
+			}
+			onClick={(event) => onSelect(event, button)}
+		>
+			{button.title}
+		</a>
+	);
+});
 
 interface SileoProps {
 	id: string;
@@ -57,7 +93,7 @@ interface SileoProps {
 	className?: string;
 	icon?: ReactNode | null;
 	styles?: SileoStyles;
-	button?: SileoButton;
+	button?: SileoButton | SileoButton[];
 	roundness?: number;
 	exiting?: boolean;
 	autoExpandDelayMs?: number;
@@ -148,7 +184,16 @@ export const Sileo = memo(function Sileo({
 	const [ready, setReady] = useState(false);
 	const [pillWidth, setPillWidth] = useState(0);
 	const [contentHeight, setContentHeight] = useState(0);
-	const hasDesc = Boolean(view.description) || Boolean(view.button);
+	const buttons = useMemo(
+		() =>
+			view.button
+				? Array.isArray(view.button)
+					? view.button
+					: [view.button]
+				: [],
+		[view.button],
+	);
+	const hasDesc = Boolean(view.description) || buttons.length > 0;
 	const isLoading = view.state === "loading";
 	const open = hasDesc && isExpanded && !isLoading;
 	const allowExpand = isLoading
@@ -535,12 +580,12 @@ export const Sileo = memo(function Sileo({
 	}
 
 	const handleButtonClick = useCallback(
-		(e: React.MouseEvent) => {
+		(e: React.MouseEvent, button: SileoButton) => {
 			e.preventDefault();
 			e.stopPropagation();
-			view.button?.onClick();
+			button.onClick();
 		},
-		[view.button],
+		[],
 	);
 
 	const handlePointerDown = useCallback(
@@ -666,18 +711,26 @@ export const Sileo = memo(function Sileo({
 						className={view.styles?.description}
 					>
 						{view.description}
-						{view.button && (
-							// biome-ignore lint/a11y/useValidAnchor: cannot use button inside a button
-							<a
-								href="#"
-								type="button"
-								data-sileo-button
-								data-state={view.state}
+						{buttons.length === 1 && (
+							<ActionButton
+								button={buttons[0]}
+								state={view.state}
 								className={view.styles?.button}
-								onClick={handleButtonClick}
-							>
-								{view.button.title}
-							</a>
+								onSelect={handleButtonClick}
+							/>
+						)}
+						{buttons.length > 1 && (
+							<div data-sileo-buttons>
+								{buttons.map((button, index) => (
+									<ActionButton
+										key={index}
+										button={button}
+										state={view.state}
+										className={view.styles?.button}
+										onSelect={handleButtonClick}
+									/>
+								))}
+							</div>
 						)}
 					</div>
 				</div>
