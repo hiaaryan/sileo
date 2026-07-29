@@ -15,9 +15,23 @@ export interface SileoStyles {
 	button?: string;
 }
 
+/**
+ * Visual weight of an action. `soft` is the default and matches the look
+ * sileo has always shipped: a tinted pill in the toast's state colour.
+ */
+export type SileoButtonVariant = "soft" | "solid" | "outline" | "ghost";
+
 export interface SileoButton {
 	title: string;
 	onClick: () => void;
+	/** Visual weight. Defaults to `"soft"`. */
+	variant?: SileoButtonVariant;
+	/**
+	 * Any CSS colour, overriding the toast's state colour for this action —
+	 * e.g. a red `solid` confirm next to a neutral `ghost` cancel. The text
+	 * colour of a `solid` button is derived from it automatically.
+	 */
+	color?: string;
 }
 
 export const SILEO_POSITIONS = [

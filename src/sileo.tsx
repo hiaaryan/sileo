@@ -46,6 +46,42 @@ interface View {
 	fill: string;
 }
 
+/**
+ * A single toast action. Rendered as an <a>, not a <button>: the toast root is
+ * itself a <button> and nesting one inside another is invalid HTML.
+ */
+const ActionButton = memo(function ActionButton({
+	button,
+	state,
+	className,
+	onSelect,
+}: {
+	button: SileoButton;
+	state: State;
+	className?: string;
+	onSelect: (event: React.MouseEvent, button: SileoButton) => void;
+}) {
+	return (
+		// biome-ignore lint/a11y/useValidAnchor: cannot use button inside a button
+		<a
+			href="#"
+			type="button"
+			data-sileo-button
+			data-state={state}
+			data-variant={button.variant ?? "soft"}
+			className={className}
+			style={
+				button.color
+					? ({ "--sileo-btn-tone": button.color } as CSSProperties)
+					: undefined
+			}
+			onClick={(event) => onSelect(event, button)}
+		>
+			{button.title}
+		</a>
+	);
+});
+
 interface SileoProps {
 	id: string;
 	fill?: string;
@@ -676,33 +712,23 @@ export const Sileo = memo(function Sileo({
 					>
 						{view.description}
 						{buttons.length === 1 && (
-							// biome-ignore lint/a11y/useValidAnchor: cannot use button inside a button
-							<a
-								href="#"
-								type="button"
-								data-sileo-button
-								data-state={view.state}
+							<ActionButton
+								button={buttons[0]}
+								state={view.state}
 								className={view.styles?.button}
-								onClick={(e) => handleButtonClick(e, buttons[0])}
-							>
-								{buttons[0].title}
-							</a>
+								onSelect={handleButtonClick}
+							/>
 						)}
 						{buttons.length > 1 && (
 							<div data-sileo-buttons>
 								{buttons.map((button, index) => (
-									// biome-ignore lint/a11y/useValidAnchor: cannot use button inside a button
-									<a
+									<ActionButton
 										key={index}
-										href="#"
-										type="button"
-										data-sileo-button
-										data-state={view.state}
+										button={button}
+										state={view.state}
 										className={view.styles?.button}
-										onClick={(e) => handleButtonClick(e, button)}
-									>
-										{button.title}
-									</a>
+										onSelect={handleButtonClick}
+									/>
 								))}
 							</div>
 						)}
