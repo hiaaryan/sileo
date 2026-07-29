@@ -353,6 +353,17 @@
 	transition: background-color 150ms ease;
 }
 
+[data-sileo-buttons] {
+	display: flex;
+	align-items: center;
+	gap: 0.375rem;
+	margin-top: 0.75rem;
+}
+
+[data-sileo-buttons] [data-sileo-button] {
+	margin-top: 0;
+}
+
 [data-sileo-button]:hover {
 	background-color: var(--sileo-btn-bg-hover, transparent);
 }

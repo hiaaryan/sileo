@@ -42,7 +42,7 @@ interface View {
 	state: State;
 	icon?: ReactNode | null;
 	styles?: SileoStyles;
-	button?: SileoButton;
+	button?: SileoButton | SileoButton[];
 	fill: string;
 }
 
@@ -57,7 +57,7 @@ interface SileoProps {
 	className?: string;
 	icon?: ReactNode | null;
 	styles?: SileoStyles;
-	button?: SileoButton;
+	button?: SileoButton | SileoButton[];
 	roundness?: number;
 	exiting?: boolean;
 	autoExpandDelayMs?: number;
@@ -148,7 +148,16 @@ export const Sileo = memo(function Sileo({
 	const [ready, setReady] = useState(false);
 	const [pillWidth, setPillWidth] = useState(0);
 	const [contentHeight, setContentHeight] = useState(0);
-	const hasDesc = Boolean(view.description) || Boolean(view.button);
+	const buttons = useMemo(
+		() =>
+			view.button
+				? Array.isArray(view.button)
+					? view.button
+					: [view.button]
+				: [],
+		[view.button],
+	);
+	const hasDesc = Boolean(view.description) || buttons.length > 0;
 	const isLoading = view.state === "loading";
 	const open = hasDesc && isExpanded && !isLoading;
 	const allowExpand = isLoading
@@ -535,12 +544,12 @@ export const Sileo = memo(function Sileo({
 	}
 
 	const handleButtonClick = useCallback(
-		(e: React.MouseEvent) => {
+		(e: React.MouseEvent, button: SileoButton) => {
 			e.preventDefault();
 			e.stopPropagation();
-			view.button?.onClick();
+			button.onClick();
 		},
-		[view.button],
+		[],
 	);
 
 	const handlePointerDown = useCallback(
@@ -666,7 +675,7 @@ export const Sileo = memo(function Sileo({
 						className={view.styles?.description}
 					>
 						{view.description}
-						{view.button && (
+						{buttons.length === 1 && (
 							// biome-ignore lint/a11y/useValidAnchor: cannot use button inside a button
 							<a
 								href="#"
@@ -674,10 +683,28 @@ export const Sileo = memo(function Sileo({
 								data-sileo-button
 								data-state={view.state}
 								className={view.styles?.button}
-								onClick={handleButtonClick}
+								onClick={(e) => handleButtonClick(e, buttons[0])}
 							>
-								{view.button.title}
+								{buttons[0].title}
 							</a>
+						)}
+						{buttons.length > 1 && (
+							<div data-sileo-buttons>
+								{buttons.map((button, index) => (
+									// biome-ignore lint/a11y/useValidAnchor: cannot use button inside a button
+									<a
+										key={index}
+										href="#"
+										type="button"
+										data-sileo-button
+										data-state={view.state}
+										className={view.styles?.button}
+										onClick={(e) => handleButtonClick(e, button)}
+									>
+										{button.title}
+									</a>
+								))}
+							</div>
 						)}
 					</div>
 				</div>

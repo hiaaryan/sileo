@@ -42,5 +42,6 @@ export interface SileoOptions {
 	fill?: string;
 	roundness?: number;
 	autopilot?: boolean | { expand?: number; collapse?: number };
-	button?: SileoButton;
+	/** Pass an array to render multiple actions side by side. */
+	button?: SileoButton | SileoButton[];
 }
